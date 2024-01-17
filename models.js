@@ -17,7 +17,7 @@ async function search(query, page) {
                 const mangaID = $(element).find('a').attr('href').replace('/manga/', '');
                 const thumbnail = $(element).find('a img').attr('src');
                 const title = $(element).find('a img').attr('alt');
-                const author = $(element).find('.story_item_right span:eq(0)').text().replace('Author(s) : ', '').split('\n').map(author => author.trim());
+                const author = $(element).find('.story_item_right span:eq(0)').text().replace('Author(s) : ', '').split('\n').map(author => author.trim()).filter(author => author !== '');
                 const update = $(element).find('.story_item_right span:eq(1)').text().replace('Updated : ', '').trim();
                 const view = $(element).find('.story_item_right span:eq(2)').text().replace('View : ', '').trim();
 
