@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga API Documentation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #1e1e1e;
+            color: #ddd;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        body.light-mode {
+            background-color: rgb(255, 245, 230);
+            color: #333;
+        }
+        h1, h2, h3, p {
+            color: inherit;
+        }
+        code {
+            background-color: #2a2a2a;
+            padding: 2px 4px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #ddd;
+        }
+        .theme-switch {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background-color: #333;
+            color: #ddd;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .theme-switch:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-switch" onclick="toggleTheme()">Toggle Theme</button>
+
+    <h1>Manga API Documentation</h1>
+
+    <h2>Search Manga</h2>
+    <p>Endpoint: <code>/search</code></p>
+    <p>Method: <code>GET</code></p>
+    <p>Parameters:</p>
+    <ul>
+        <li><code>query</code>: The search query string.</li>
+        <li><code>page</code>: The page number (optional).</li>
+    </ul>
+
+    <h2>Get Chapter Information</h2>
+    <p>Endpoint: <code>/chapter-info</code></p>
+    <p>Method: <code>GET</code></p>
+    <p>Parameters:</p>
+    <ul>
+        <li><code>query</code>: The manga ID.</li>
+    </ul>
+
+    <h2>Fetch Chapter Images</h2>
+    <p>Endpoint: <code>/fetch-chapter</code></p>
+    <p>Method: <code>GET</code></p>
+    <p>Parameters:</p>
+    <ul>
+        <li><code>query</code>: The chapter ID.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>
+        This is a simple API for retrieving manga-related information. Make sure to provide the correct parameters when making requests to the respective endpoints.
+    </p>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-mode');
+        }
+    </script>
+</body>
+</html>
