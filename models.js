@@ -4,9 +4,93 @@ const urldata = require('url');
 
 const url = 'https://ww7.mangakakalot.tv';
 
+
+async function latestRelease() {
+    try {
+        const response = await axios.get(`${url}`);
+        if (response.status === 200) {
+            const html = response.data;
+            const $ = cheerio.load(html);
+            const mangaList = [];
+            $('#contentstory .itemupdate.first').each((index, element) => {
+                const mangaID = $(element).find('a').attr('href').replace('/manga/', '');
+                const thumbnail = `${url}${$(element).find('a img').attr('data-src')}`;
+                const title = $(element).find('ul li:eq(0) h3 a').text().trim();
+                const chapters = [];
+                $(element).find('ul li').each((ind, ele) => {
+                    if (ind === 0) {
+                        return;
+                    }
+                    const chapterID = $(ele).find('span a').attr('href').replace('/chapter/', '');
+                    const chapter = $(ele).find('span a').attr('title');
+                    const update = $(ele).find('i').text().trim();
+
+                    chapters.push({ chapterID, chapter, update });
+                });
+                
+                const mangaInfo = {
+                    'id': mangaID,
+                    'img': thumbnail,
+                    title,
+                    chapters
+                };
+                mangaList.push(mangaInfo);
+            });
+            return { 'results': mangaList };
+        }
+
+    } catch (error) {
+        console.error(`Caught an error: ${error.message}`);
+    }
+}
+
+
+async function latestManga(page) {
+    page = parseInt(page) || 1;
+    if (page < 1) page = 1;
+    try {
+        const response = await axios.get(`${url}/manga_list/?type=latest&category=all&state=all&page=${page}`);
+        if (response.status === 200) {
+            const html = response.data;
+            const $ = cheerio.load(html);
+            const results = [];
+            $('.truyen-list .list-truyen-item-wrap').each((index, element) => {
+                const mangaID = $(element).find('a:eq(0)').attr('href').replace('/manga/', '');
+                const img = `${url}${$(element).find('a:eq(0) img').attr('data-src')}`;
+                const title = $(element).find('a:eq(0)').attr('title');
+                const latestChapter = $(element).find('a:eq(2)').attr('title') ? $(element).find('a:eq(2)').attr('title') : "N/A";
+                const chapterID = $(element).find('a:eq(2)').attr('href') ? $(element).find('a:eq(2)').attr('href').replace('/chapter/', '') : "N/A";
+                const view = $(element).find('.aye_icon').text().trim();
+                const description = $(element).find('p').text().trim();
+
+                results.push({
+                    mangaID,
+                    img,
+                    title,
+                    latestChapter,
+                    chapterID,
+                    view,
+                    description
+                })
+            });
+
+            const currentPage = $('.panel_page_number .group_page .page_select').text();
+            const totalPage = $('.panel_page_number .group_page .page_last').last().attr('href');
+            const parsedUrl = urldata.parse(totalPage, true);
+            const pageNumber = parsedUrl.query.page;
+            results.push({ 'page': currentPage, 'totalPage': pageNumber });
+            return { results };
+        }
+    } catch (error) {
+        console.error(`Caught an error: ${error.message}`);
+    }
+}
+
+
 async function search(query, page) {
     if (!query) return { 'message': 'Missing Query' };
-    if (!page) page = 1;
+    page = parseInt(page) || 1; // Ensure page is a valid number
+    if (page < 1) page = 1;
     try {
         const response = await axios.get(`${url}/search/${query}?page=${page}`);
         if (response.status === 200) {
@@ -24,10 +108,10 @@ async function search(query, page) {
                 const mangaInfo = {
                 'id': mangaID,
                 'img': thumbnail,
-                'title': title,
-                'author': author,
-                'update': update,
-                'view': view
+                title,
+                author,
+                update,
+                view
                 };
                 mangaList.push(mangaInfo);
             });
@@ -36,7 +120,7 @@ async function search(query, page) {
             const parsedUrl = urldata.parse(totalPage, true);
             const pageNumber = parsedUrl.query.page;
             mangaList.push({ 'page': currentPage, 'totalPage': pageNumber });
-            return mangaList;
+            return { 'results': mangaList };
         }
     } catch (error) {
         console.error(`Caught an error: ${error.message}`);
@@ -126,7 +210,9 @@ async function fetchChapter(query) {
 }
 
 module.exports = {
+    latestRelease,
     search,
+    latestManga,
     chapterInfo,
     fetchChapter
 };
