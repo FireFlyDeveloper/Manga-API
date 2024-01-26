@@ -119,8 +119,7 @@ async function search(query, page) {
             const totalPage = $('.panel_page_number .group_page .page_last').last().attr('href');
             const parsedUrl = urldata.parse(totalPage, true);
             const pageNumber = parsedUrl.query.page;
-            mangaList.push({ 'page': currentPage, 'totalPage': pageNumber });
-            return { 'results': mangaList };
+            return { 'results': mangaList, 'pages':  [{ 'page': currentPage, 'totalPage': pageNumber }]};
         }
     } catch (error) {
         console.error(`Caught an error: ${error.message}`);
