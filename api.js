@@ -4,6 +4,11 @@ const port = 3000;
 
 const { latestRelease, search, latestManga, chapterInfo, fetchChapter } = require('./models');
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.get('/latest-release', async (req, res) => {
     try {
         const result = await latestRelease();
