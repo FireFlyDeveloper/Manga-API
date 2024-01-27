@@ -50,11 +50,12 @@ app.get('/chapter-info', async (req, res) => {
     }
 });
 
-app.get('/fetch-chapter', async (req, res) => {
-    const query = req.query.query;
+app.get('/fetch-chapter/:mangaid/:chapterid', async (req, res) => {
+    const mangaID = req.params.mangaid;
+    const chapterID = req.params.chapterid;
     
     try {
-        const result = await fetchChapter(query);
+        const result = await fetchChapter(mangaID, chapterID);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });

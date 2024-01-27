@@ -119,7 +119,7 @@ async function search(query, page) {
             const totalPage = $('.panel_page_number .group_page .page_last').last().attr('href');
             const parsedUrl = urldata.parse(totalPage, true);
             const pageNumber = parsedUrl.query.page;
-            return { 'results': mangaList, 'pages':  [{ 'page': currentPage, 'totalPage': pageNumber }]};
+            return { 'results': mangaList, 'pages':  [{ 'page': currentPage, 'totalPage': pageNumber, 'searchKey': query }]};
         }
     } catch (error) {
         console.error(`Caught an error: ${error.message}`);
@@ -184,10 +184,10 @@ async function chapterInfo(query) {
 }
 
 
-async function fetchChapter(query) {
+async function fetchChapter(query, chapterID) {
     if (!query) return { 'message': 'Missing Chapter ID' };
     try {
-        const response = await axios.get(`${url}/chapter/${query}`);
+        const response = await axios.get(`${url}/chapter/${query}/${chapterID}`);
         if (response.status === 200) {
             const html = response.data;
             const $ = cheerio.load(html);
@@ -197,9 +197,16 @@ async function fetchChapter(query) {
                 const imgSrc = $(element).attr('data-src');
                 images.push(imgSrc);
             });
+            const chapters = [];
+            $('#c_chapter option').each((index, element) => {
+                const chapterNumber = $(element).attr("value");
+                chapters.push(chapterNumber);
+            });
             const chapter = {
                 title,
-                images
+                images,
+                chapters,
+                'currentChapter': chapterID
             }
             return { 'results': chapter };
         }
