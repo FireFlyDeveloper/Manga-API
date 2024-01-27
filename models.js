@@ -176,7 +176,7 @@ async function chapterInfo(query) {
                 summary,
                 chapters
             };
-            return results;
+            return { results };
         }
     } catch (error) {
         console.error(`Caught an error: ${error.message}`);
@@ -201,7 +201,7 @@ async function fetchChapter(query) {
                 title,
                 images
             }
-            return chapter;
+            return { 'results': chapter };
         }
     } catch (error) {
         console.error(`Caught an error: ${error.message}`);
