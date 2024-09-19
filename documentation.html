@@ -175,6 +175,25 @@
             top: 20px;
             right: 10px;
         }
+        .contact-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .contact-section a {
+            margin: 0 10px;
+            text-decoration: none;
+            outline: none;
+        }
+        .contact-section img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 50%;
+            transition: opacity 0.3s;
+        }
+        .contact-section img:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -241,16 +260,17 @@
     <p>Description: Retrieves detailed information about a specific manga chapter. Includes metadata about the manga, such as title, alternative titles, authors, status, genres, ratings, summary, and chapter details.</p>
     <p>Parameters:</p>
     <ul>
-        <li><code>query</code>: The manga ID.</li>
+        <li><code>id</code>: The manga ID.</li>
     </ul>
 
     <h2>Fetch Chapter Images</h2>
-    <p>Endpoint: <code>/fetch-chapter/{query}</code></p>
+    <p>Endpoint: <code>/fetch-chapter/:id/:chapterID</code></p>
     <p>Method: <code>GET</code></p>
     <p>Description: Fetches images and details for a specific manga chapter based on the chapter ID.</p>
     <p>Parameters:</p>
     <ul>
-        <li><code>query</code>: The chapter ID.</li>
+        <li><code>id</code>: The manga ID.</li>
+        <li><code>chapterID</code>: The chapter ID.</li>
     </ul>
 
     <h2>Get Latest Manga Releases</h2>
@@ -271,6 +291,18 @@
     <p>
         This is a simple API for retrieving manga-related information. Make sure to provide the correct parameters when making requests to the respective endpoints.
     </p>
+
+    <div class="contact-section">
+        <a href="https://github.com/FireFlyDeveloper">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+        </a>
+        <a href="https://facebook.com/kimslds">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+        </a>
+        <a href="mailto:saludeskimdev@gmail.com">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail">
+        </a>
+    </div>
 
     <script>
         function toggleTheme() {
